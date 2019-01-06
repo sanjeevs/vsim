@@ -68,13 +68,15 @@ class TestConfig1 < Minitest::Test
         assert_equal ["lib1", "lib2"], tmp1.vlog_libs
     end
 
-    def test_multi_same_eval
+    # Make sure that same string gives the same object
+    def test_equality
         tmp1 = Vsim::Config.new(@user_code1)
         tmp2 = Vsim::Config.new(@user_code1)
         assert_equal tmp1.vlog_inc_dirs, tmp2.vlog_inc_dirs
     end
 
-    def test_multi_diff_eval
+    # Make sure that values are not getting appended.
+    def test_clean_state
         tmp1 = Vsim::Config.new(@user_code1)
         tmp1 = Vsim::Config.new(@user_code2)
         assert_equal ["lib3", "lib4"], tmp1.vlog_libs
