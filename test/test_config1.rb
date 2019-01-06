@@ -14,6 +14,11 @@ class TestConfig1 < Minitest::Test
             @vlog_inc_dirs = ["i1", "i2", 'i3']
             @vlog_libs = ["lib1", "lib2"]
          $
+         # Another correct config file
+         @user_code2 = %$
+            @vlog_inc_dirs = ["i4", "i5", 'i6']
+            @vlog_libs = ["lib3", "lib4"]
+         $
          # A config file with a single typo
          @typo_code1 = %$
             @my_typo = []
@@ -63,10 +68,16 @@ class TestConfig1 < Minitest::Test
         assert_equal ["lib1", "lib2"], tmp1.vlog_libs
     end
 
-    def test_multi_eval
+    def test_multi_same_eval
         tmp1 = Vsim::Config.new(@user_code1)
         tmp2 = Vsim::Config.new(@user_code1)
         assert_equal tmp1.vlog_inc_dirs, tmp2.vlog_inc_dirs
+    end
+
+    def test_multi_diff_eval
+        tmp1 = Vsim::Config.new(@user_code1)
+        tmp1 = Vsim::Config.new(@user_code2)
+        assert_equal ["lib3", "lib4"], tmp1.vlog_libs
     end
 
 end
