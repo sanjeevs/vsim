@@ -24,9 +24,14 @@ class Vsim::Config
         if legal_variables != instance_variables
             diff = instance_variables - legal_variables
             if diff.length == 1
-                raise TypeError.new("Keyword #{diff[0].to_s} is not legal")
+                raise TypeError.new("Keyword \'#{diff[0].to_s}\' is not legal")
             else
-                raise TypeError.new("Keywords #{diff} are not legal.")
+                msg = ""
+                diff.each_with_index do |e, i|
+                    msg += e.to_s
+                    msg += ", " unless i == (diff.size - 1)
+                end
+                raise TypeError.new("Keywords \'#{msg}\' are not legal.")
             end
         end
     end

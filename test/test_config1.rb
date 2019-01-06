@@ -14,9 +14,14 @@ class TestConfig1 < Minitest::Test
             @vlog_inc_dirs = ["i1", "i2", 'i3']
             @vlog_libs = ["lib1", "lib2"]
          $
-         # A config file with a typo
+         # A config file with a single typo
          @typo_code1 = %$
             @my_typo = []
+        $
+        # A config file with multipe typos
+        @typo_code2 = %$
+            @my_typo_1 = ['ab']
+            @my_typo_2 = ['cd']
         $
         @valid_attributes = Set.new([:@vlog_defines, :@vlog_files, :@vlog_inc_dirs,
                                      :@vlog_lib_dirs, :@vlog_libs, :@vlog_lib_suffixes,
@@ -37,13 +42,19 @@ class TestConfig1 < Minitest::Test
         end
     end
 
-    def test_typo1
+    def test_single_typo
       exception = assert_raises TypeError do
           Vsim::Config.new(@typo_code1)
       end
-      assert_equal "Keyword @my_typo is not legal", exception.message
+      assert_equal "Keyword \'@my_typo\' is not legal", exception.message
     end
 
+    def test_multiple_typos
+      exception = assert_raises TypeError do
+          Vsim::Config.new(@typo_code2)
+      end
+      assert_equal "Keywords \'@my_typo_1, @my_typo_2\' are not legal.", exception.message
+    end
 
     def test_eval
         tmp1 = Vsim::Config.new(@user_code1)
