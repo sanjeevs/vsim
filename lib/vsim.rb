@@ -3,5 +3,6 @@ class Vsim
         "hello world"
     end
 end
-
+require 'vsim/utils'
 require 'vsim/config'
+require 'vsim/config_factory'
